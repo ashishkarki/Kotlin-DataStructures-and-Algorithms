@@ -86,6 +86,22 @@ internal class LinkedListTest {
         removedValue `should be` 3
     }
 
+    @Test
+    fun `removeAfter should work correctly`() {
+        testLinkedList.push(3).push(2).push(1)
+
+        //before removing after
+        testLinkedList.toString() `should be equal to` "1 -> 2 -> 3"
+
+        // after removing after
+        val indexToRemoveAt = 1
+        val beforeNode = testLinkedList.findNodeAt(indexToRemoveAt - 1)
+        val removedAfterValue = beforeNode?.let { testLinkedList.removeAfter(it) }
+
+        testLinkedList.toString() `should be equal to` "1 -> 3"
+        removedAfterValue `should be` 2
+    }
+
     @After
     fun tearDown() {
         testLinkedList.size = 0

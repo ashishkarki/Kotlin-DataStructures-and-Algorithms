@@ -77,6 +77,7 @@ class LinkedList<T> {
     // pop (to remove at front of the list), removeLast (node), removeAfter (specific node)
 
     // 1. pop/remove the first node in the linkedlist;
+    // complexity is O(1) since we are just changing links
     fun pop(): T? {
         if (!isEmpty()) size--
 
@@ -120,9 +121,20 @@ class LinkedList<T> {
     }
 
     // 3. removeAfter: remove after certain node; first find the before node
-    // complexity:
-    fun removeAfter(node: Node<T>): T? {
+    // complexity: O(1) - if we have the beforeNode, we just change the links in constant time
+    fun removeAfter(beforeNode: Node<T>): T? {
+        val result = beforeNode.next?.data
 
+        // if the node to be removed is tail, update the tail to beforeNode
+        if (beforeNode.next == tail) tail = beforeNode
+
+        // if we the beforeNode is NOT the last/tail node, also decrease size
+        if (beforeNode.next != null) size--
+
+        // change pointers
+        beforeNode.next = beforeNode.next?.next
+
+        return result
     }
 
     // helper method to insert a node as first element
