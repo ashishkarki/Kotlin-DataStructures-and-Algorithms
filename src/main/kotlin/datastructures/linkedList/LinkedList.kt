@@ -21,14 +21,13 @@ class LinkedListIterator<T>(private val linkedList: LinkedList<T>) : Iterator<T>
 
 }
 
-class LinkedList<T> : Iterable<T> {
+class LinkedList<T> : Iterable<T>, Collection<T> {
     private var head: Node<T>? = null
     private var tail: Node<T>? = null
 
-    var size = 0
-        private set
+    override var size = 0 // not using a private setter so as to use this property directly in unit test
 
-    private fun isEmpty() = size == 0
+    override fun isEmpty() = size == 0
 
     override fun toString(): String {
         return if (isEmpty()) "Empty List!!"
@@ -162,6 +161,23 @@ class LinkedList<T> : Iterable<T> {
 
     override fun iterator(): Iterator<T> {
         return LinkedListIterator(this)
+    }
+
+    // this iterates, in worst case, through all elements and so complexity: O(n)
+    override fun contains(element: T): Boolean {
+        for (item in this) {
+            if (item == element) return true
+        }
+
+        return false
+    }
+
+    // bit inefficient; complextiy: O(n^2) since two loops
+    override fun containsAll(elements: Collection<T>): Boolean {
+        for (searched in elements) {
+            if (!contains(searched)) return false
+        }
+        return true
     }
 
 }
