@@ -1,9 +1,32 @@
 package datastructures.linkedList
 
-class LinkedList<T> {
+class LinkedListIterator<T>(private val linkedList: LinkedList<T>) : Iterator<T> {
+    private var index = 0
+    private var lastVisitedNode: Node<T>? = null
+
+    override fun hasNext() = index < linkedList.size
+
+    override fun next(): T {
+        // first check if index is okay
+        if (index >= linkedList.size) throw IndexOutOfBoundsException()
+
+        // go to next node and update lastVisited
+        lastVisitedNode = if (index == 0) linkedList.findNodeAt(0)
+        else lastVisitedNode?.next
+
+        // update index
+        index++
+        return lastVisitedNode!!.data
+    }
+
+}
+
+class LinkedList<T> : Iterable<T> {
     private var head: Node<T>? = null
     private var tail: Node<T>? = null
+
     var size = 0
+        private set
 
     private fun isEmpty() = size == 0
 
@@ -137,9 +160,8 @@ class LinkedList<T> {
         return result
     }
 
-    // helper method to insert a node as first element
-    fun linkHead(data: T): LinkedList<T>? {
-        return null
+    override fun iterator(): Iterator<T> {
+        return LinkedListIterator(this)
     }
 
 }
