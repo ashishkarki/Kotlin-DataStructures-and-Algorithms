@@ -1,6 +1,7 @@
 package datastructures.linkedList
 
-class LinkedListIterator<T>(private val linkedList: LinkedList<T>) : Iterator<T> {
+class LinkedListIterator<T>(private val linkedList: LinkedList<T>) :
+        MutableIterator<T> {
     private var index = 0
     private var lastVisitedNode: Node<T>? = null
 
@@ -19,9 +20,25 @@ class LinkedListIterator<T>(private val linkedList: LinkedList<T>) : Iterator<T>
         return lastVisitedNode!!.data
     }
 
+    override fun remove() {
+        // 1: if we want to remove the first element
+        if (index == 1) linkedList.pop() // since next() updates index by 1 when returning element;
+        // so next() is done accessing the 0-th element, the index is 1 => that's why == 1 above
+        else {
+            // 2: find beforeNode to modify links after deletion of this node
+            val beforeNode = linkedList.findNodeAt(index - 2) ?: return
+            // 3: remove current node and move the lastVisitedNode to valid, before node
+            linkedList.removeAfter(beforeNode)
+            lastVisitedNode = beforeNode
+        }
+
+        // there is one less item, so move index by one
+        index--
+    }
+
 }
 
-class LinkedList<T> : Iterable<T>, Collection<T> {
+class LinkedList<T> : MutableIterable<T>, MutableCollection<T> {
     private var head: Node<T>? = null
     private var tail: Node<T>? = null
 
@@ -159,7 +176,7 @@ class LinkedList<T> : Iterable<T>, Collection<T> {
         return result
     }
 
-    override fun iterator(): Iterator<T> {
+    override fun iterator(): MutableIterator<T> {
         return LinkedListIterator(this)
     }
 
@@ -178,6 +195,66 @@ class LinkedList<T> : Iterable<T>, Collection<T> {
             if (!contains(searched)) return false
         }
         return true
+    }
+
+    override fun add(element: T): Boolean {
+        append(element)
+        return true
+    }
+
+    override fun addAll(elements: Collection<T>): Boolean {
+        for (element in elements) {
+            append(element)
+        }
+
+        return true
+    }
+
+    override fun clear() {
+        head = null
+        tail = null
+        size = 0
+    }
+
+    override fun remove(element: T): Boolean {
+        // 1
+        val iterator = iterator()
+        // 2
+        while (iterator.hasNext()) {
+            val item = iterator.next()
+            // 3 if element is found remove it
+            if (item == element) {
+                iterator.remove()
+                return true
+            }
+        }
+
+        return false
+    }
+
+    // i believe removeAll should remove all elements in the parameter
+    override fun removeAll(elements: Collection<T>): Boolean {
+        var result = true
+        for (element in elements) {
+            result = remove(element) && result
+        }
+
+        return result
+    }
+
+    override fun retainAll(elements: Collection<T>): Boolean {
+        var result = false
+
+        val iterator = this.iterator()
+        while (iterator.hasNext()) {
+            val item = iterator.next()
+            if (!elements.contains(item)) {
+                iterator.remove()
+                result = true
+            }
+        }
+
+        return result
     }
 
 }

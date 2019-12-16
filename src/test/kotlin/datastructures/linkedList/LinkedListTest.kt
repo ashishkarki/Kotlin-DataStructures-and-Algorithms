@@ -102,6 +102,52 @@ internal class LinkedListTest {
         removedAfterValue `should be` 2
     }
 
+    @Test
+    fun `removing elements should work correctly`() {
+        val mutableCollection: MutableCollection<Int> = LinkedList()
+        mutableCollection.add(3)
+        mutableCollection.add(2)
+        mutableCollection.add(1)
+
+        // list before removing
+        mutableCollection.toString() `should be equal to` "3 -> 2 -> 1"
+        // after removing
+        mutableCollection.remove(3)
+        mutableCollection.toString() `should be equal to` "2 -> 1"
+    }
+
+    @Test
+    fun `retainAll should work correctly`() {
+        val mutableCollection: MutableCollection<Int> = LinkedList()
+        mutableCollection.add(3)
+        mutableCollection.add(2)
+        mutableCollection.add(1)
+        mutableCollection.add(4)
+        mutableCollection.add(5)
+
+        // list before retainAll
+        mutableCollection.toString() `should be equal to` "3 -> 2 -> 1 -> 4 -> 5"
+        // list after retainAll
+        mutableCollection.retainAll(listOf(3, 4, 5))
+        mutableCollection.toString() `should be equal to` "3 -> 4 -> 5"
+    }
+
+    @Test
+    fun `removeAll should work correctly`() {
+        val mutableCollection: MutableCollection<Int> = LinkedList()
+        mutableCollection.add(3)
+        mutableCollection.add(2)
+        mutableCollection.add(1)
+        mutableCollection.add(4)
+        mutableCollection.add(5)
+
+        // list before removeAll
+        mutableCollection.toString() `should be equal to` "3 -> 2 -> 1 -> 4 -> 5"
+        // list after removeAll
+        mutableCollection.removeAll(listOf(3, 4, 5))
+        mutableCollection.toString() `should be equal to` "2 -> 1"
+    }
+
     @After
     fun tearDown() {
         testLinkedList.size = 0
