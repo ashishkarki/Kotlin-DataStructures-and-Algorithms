@@ -5,6 +5,7 @@ class DoublyLinkedListQueue<T> : Queue<T> {
     private var size = 0
 
     // time complexity is O(1) since we are using doubly linked list
+    // space complexity: O(n) since there is a new linked list created
     override fun enqueue(element: T): Boolean {
         queue.addLast(element)
         size++
@@ -13,6 +14,7 @@ class DoublyLinkedListQueue<T> : Queue<T> {
 
     /**
      * Time complexity: O(1) since with doubly linked list, we only change links
+     * space complexity: O(n) since there is a new linked list created
      */
     override fun dequeue(): T? {
         // check if there is a node at all, if there is no node just return null

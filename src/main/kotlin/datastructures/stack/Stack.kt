@@ -52,6 +52,8 @@ class Stack<T> : IStack<T> {
         return storage.removeAt(storage.size - 1)
     }
 
+    // this should be O(1) as array list does index accessing
+    // returns the top-most element in the stack without removing it
     override fun peek() = storage.lastOrNull()
 
     override val count: Int
