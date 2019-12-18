@@ -1,5 +1,8 @@
 package datastructures.stack
 
+import org.amshove.kluent.`should be equal to`
+import org.amshove.kluent.`should be`
+import org.amshove.kluent.`should equal`
 import org.junit.Test
 import org.junit.jupiter.api.AfterEach
 import org.junit.Assert.assertEquals
@@ -41,5 +44,21 @@ internal class StackTest {
         assertTrue(poppedElement == 4)
 
         assertEquals("top > 3 > 2 > 1 > bottom", stack.toString())
+    }
+
+    @Test
+    fun `create() should build stack from Iterable`() {
+        val someList = listOf<String>("A", "B", "C", "D")
+
+        val stack = Stack.create(someList)
+
+        stack.toString() `should equal` "top > D > C > B > A > bottom"
+    }
+
+    @Test
+    fun `stackOf() should build a new stack of elements`() {
+        val stack = stackOf(1.0, 2.0, 3.0)
+
+        stack.toString() `should equal` "top > 3.0 > 2.0 > 1.0 > bottom"
     }
 }

@@ -1,5 +1,7 @@
 package datastructures.stack
 
+import javax.lang.model.util.Elements
+
 interface IStack<Element> {
     fun push(element: Element)
     fun pop(): Element?
@@ -12,9 +14,22 @@ interface IStack<Element> {
         get() = count == 0
 }
 
-class Stack<T : Any> : IStack<T> {
+fun <Element> stackOf(vararg elements: Element): IStack<Element> {
+    return Stack.create(elements.asList())
+}
+
+class Stack<T> : IStack<T> {
     private val storage = arrayListOf<T>()
 
+    companion object {
+        fun <Element> create(items: Iterable<Element>): IStack<Element> {
+            val stack = Stack<Element>()
+
+            for (item in items) stack.push(item)
+
+            return stack
+        }
+    }
 
     override fun toString() = buildString {
         append("top > ")
