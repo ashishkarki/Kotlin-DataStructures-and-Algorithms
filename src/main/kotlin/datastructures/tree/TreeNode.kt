@@ -3,7 +3,7 @@ package datastructures.tree
 import java.util.*
 
 class TreeNode<T>(val value: T) {
-    private val children: MutableList<TreeNode<T>> = mutableListOf()
+    val children: MutableList<TreeNode<T>> = mutableListOf()
 
     fun addChild(child: TreeNode<T>) = children.add(child)
 
@@ -37,6 +37,16 @@ class TreeNode<T>(val value: T) {
                 null
             }
         }
+    }
+
+    fun search(valueToSearch: T): TreeNode<T>? {
+        var result: TreeNode<T>? = null
+
+        forEachLevelOrder {
+            if (it.value == valueToSearch) result = it
+        }
+
+        return result
     }
 
     override fun toString(): String {

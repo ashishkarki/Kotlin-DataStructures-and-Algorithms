@@ -17,6 +17,18 @@ internal class TreeNodeTest {
         tree.forEachLevelOrder { println(it.value) }
     }
 
+    @Test
+    fun testSearch() {
+        val tree = makeBeverageTree()
+        tree.search("ginger ale")?.let {
+            println("Found node: ${it.value}")
+        }
+
+        tree.search("something random")?.let {
+            println("Found node: ${it.value}")
+        } ?: println("Could find this string")
+    }
+
     private fun makeBeverageTree(): TreeNode<String> {
         val tree = TreeNode("Beverages")
 
