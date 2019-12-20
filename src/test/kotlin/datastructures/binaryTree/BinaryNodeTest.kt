@@ -47,6 +47,6 @@ internal class BinaryNodeTest {
         println("printing original tree: $binaryTree")
         val array = binaryTree.serialize()
         println("serialized tree is $array")
-        println(binaryTree.deserialize(array))
+        println(binaryTree.deserializeOptimized(array))
     }
 }

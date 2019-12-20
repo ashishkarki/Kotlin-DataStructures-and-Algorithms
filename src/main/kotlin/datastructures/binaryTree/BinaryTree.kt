@@ -4,7 +4,7 @@ import kotlin.math.max
 
 typealias Visitor<T> = (T?) -> Unit
 
-class BinaryNode<T>(var value: T) {
+class BinaryNode<T : Comparable<T>>(var value: T) {
 
     var leftChild: BinaryNode<T>? = null
     var rightChild: BinaryNode<T>? = null
@@ -89,7 +89,7 @@ class BinaryNode<T>(var value: T) {
      * Because you’re calling removeAt as many times as there are elements in the array,
      * this algorithm has an O(n²) time complexity
      */
-    fun deserialize(list: MutableList<T?>): BinaryNode<T?>? {
+    fun deserialize(list: MutableList<T?>): BinaryNode<T>? {
         // 1
         // val rootValue = list.removeAt(0) ?: return null
         // based on deserializeOptimized, the above line becomes this:
@@ -102,7 +102,7 @@ class BinaryNode<T>(var value: T) {
          */
 
         // 2
-        val root = BinaryNode<T?>(rootValue)
+        val root = BinaryNode<T>(rootValue)
 
         root.leftChild = deserialize(list)
         root.rightChild = deserialize(list)
@@ -112,13 +112,48 @@ class BinaryNode<T>(var value: T) {
 
     // this now becomes an O(n) time complexity operation since the removeAt(list.size -1) doesn't involve
     // shifting elements to the left and hence is only a O(1) process
-    fun deserializeOptimized(list: MutableList<T?>): BinaryNode<T?>? {
+    fun deserializeOptimized(list: MutableList<T?>): BinaryNode<T>? {
         return deserialize(list.asReversed())
     }
 
     // This recursive min property in BinaryNode will help you find the minimum node in a subtree
+    // The time complexity of this function is O(n). The space complexity of this function is O(n)
     val min: BinaryNode<T>?
         get() = leftChild?.min ?: this
+
+    val isBinarySearchTree: Boolean
+        get() = isBST(this, min = null, max = null)
+
+    /**
+     * The time complexity of this solution is O(n) since you need to traverse through the entire tree once.
+     * There is also a O(n) space cost since you’re making n recursive calls.
+     */
+    private fun isBST(tree: BinaryNode<T>?, min: T?, max: T?): Boolean {
+        // 1: A null node is a binary search tree, so you’ll return true in that case
+        tree ?: return true
+
+        //2: If the current value exceeds the bounds of the min and max values,
+        // the current node does not respect the binary search tree rules.
+        if (min != null && tree.value <= min) return false
+        else if (max != null && tree.value > max) return false
+
+        // 3: If any of the recursive calls evaluate false, the false value will propagate to the top.
+        return isBST(tree.leftChild, min, tree.value) && isBST(tree.rightChild, tree.value, max)
+    }
+
+    /**
+     * Override equals() to check whether two binary search trees are equal.
+     * For two binary trees to be equal, both trees must have the same elements in the same order.
+     */
+    override fun equals(other: Any?): Boolean {
+        return if (other != null && other is BinaryNode<*>) {
+            this.value == other.value
+                    && this.leftChild == other.leftChild
+                    && this.rightChild == other.rightChild
+        } else {
+            false
+        }
+    }
 
     override fun toString() = diagram(this)
 
@@ -134,5 +169,12 @@ class BinaryNode<T>(var value: T) {
                         root + "${node.value}\n" + diagram(node.leftChild, "$bottom│ ", "$bottom└──", "$bottom ")
             }
         } ?: "${root}null\n"
+    }
+
+    override fun hashCode(): Int {
+        var result = value.hashCode()
+        result = 31 * result + (leftChild?.hashCode() ?: 0)
+        result = 31 * result + (rightChild?.hashCode() ?: 0)
+        return result
     }
 }
