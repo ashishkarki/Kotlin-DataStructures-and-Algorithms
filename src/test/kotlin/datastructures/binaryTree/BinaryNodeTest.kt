@@ -36,4 +36,17 @@ internal class BinaryNodeTest {
         println("PostOrder traversal of binary tree: ")
         binaryTree.traversePostOrder { println(it) }
     }
+
+    @Test
+    fun `heightOfBinaryTree should give correct height`() {
+        println("height of this tree: ${binaryTree.heightOfBinaryTree()}")
+    }
+
+    @Test
+    fun `serialization and deserialization should work correctly`() {
+        println("printing original tree: $binaryTree")
+        val array = binaryTree.serialize()
+        println("serialized tree is $array")
+        println(binaryTree.deserialize(array))
+    }
 }
