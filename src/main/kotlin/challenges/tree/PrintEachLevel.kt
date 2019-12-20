@@ -34,6 +34,9 @@ fun <T> TreeNode<T>.printEachLevel_Ashish(visit: Visitor<T>) {
     }
 }
 
+/**
+ * time complexity is O(n); plus since we have a separate queue, space complexity is O(n)
+ */
 fun <T> TreeNode<T>.printEachLevel(visit: Visitor<T>) {
     // 1: create a queue to go through each level
     val queue: Queue<TreeNode<T>> = LinkedList<TreeNode<T>>()

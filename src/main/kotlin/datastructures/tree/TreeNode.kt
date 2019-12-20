@@ -8,7 +8,10 @@ class TreeNode<T>(val value: T) {
     fun addChild(child: TreeNode<T>) = children.add(child)
 
     /**
-     * Depth-first Traversal
+     * Depth-first Traversal.
+     * Time complexity is O(n) as they visit every node exactly once.
+     * Extra Space required for Depth First Traversals is O(h) where h is maximum height of Binary Tree.
+     * In Depth First Traversals, stack (or function call stack) stores all ancestors of a node
      */
     fun forEachDepthFirst(visit: Visitor<T>) {
         visit(this) // visit the root which is the this reference
@@ -19,7 +22,10 @@ class TreeNode<T>(val value: T) {
     }
 
     /**
-     * Level-order (or breadth first) traversal
+     * Level-order (or breadth first) traversal.
+     * Time complexity is O(n) as they visit every node exactly once
+     * Extra Space required for Level Order Traversal is O(w) where w is maximum width of Binary Tree.
+     * In level order traversal, queue one by one stores nodes of different level
      */
     fun forEachLevelOrder(visit: Visitor<T>) {
         visit(this) // visit the root first
