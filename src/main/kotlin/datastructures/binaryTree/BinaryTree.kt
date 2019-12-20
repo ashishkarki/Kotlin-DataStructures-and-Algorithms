@@ -1,5 +1,7 @@
 package datastructures.binaryTree
 
+import kotlin.math.max
+
 typealias Visitor<T> = (T) -> Unit
 
 class BinaryNode<T>(private val value: T) {
@@ -16,6 +18,10 @@ class BinaryNode<T>(private val value: T) {
      * 2.3 Postorder Traversal (Left-Right-Root)
      */
 
+    /**
+     * Overall note for pre/in/post order traversals:
+     * Each one of these traversal algorithms has both a time and space complexity of O(n)
+     */
     fun traverseInOrder(visit: Visitor<T>) {
         leftChild?.traverseInOrder(visit)
         visit(value)
@@ -32,6 +38,21 @@ class BinaryNode<T>(private val value: T) {
         leftChild?.traversePostOrder(visit)
         rightChild?.traversePostOrder(visit)
         visit(value)
+    }
+
+    /**
+     * Given a binary tree, find the height of the tree. The height of the binary tree is determined by
+     * the distance between the root and the furthest leaf. The height of a binary tree with a single node
+     * is zero since the single node is both the root and the furthest leaf.
+     */
+    /**
+     * time complexity of O(n) since you need to traverse through all of the nodes.
+     * This algorithm incurs a space cost of O(n) since you need to make the same n recursive calls to the call stack
+     */
+    fun heightOfBinaryTree(node: BinaryNode<T>? = this): Int {
+        return node?.let {
+            1 + max(heightOfBinaryTree(node.leftChild), heightOfBinaryTree(node.rightChild))
+        } ?: -1
     }
 
     override fun toString() = diagram(this)
