@@ -63,27 +63,42 @@ class BinarySearchTree<T : Comparable<T>> {
         return false
     }
 
-    fun contains2(value: T): Boolean {
-        // 1
-        var current = root
+    // REMOVING ELEMENTS has few different scenarios:
+    // 1. Leaf Node: Removing a leaf node is straightforward; simply detach the leaf node
+    // 2. One child only: When removing nodes with one child, you need to reconnect that one child with the rest of the tree
+    // 3. With Two/both children: When removing a node with two children, replace the node you removed with
+    // the smallest node in its right subtree. Based on the rules of the BST, this is the leftmost node of the right subtree
 
-        // 2
-        while (current != null) {
-            // 3
-            if (current.value == value) {
-                return true
-            }
+    fun remove(value: T) {
+        root = remove(root, value)
+    }
 
-            // 4
-            current = if (value < current.value) {
-                current.leftChild
-            } else {
-                current.rightChild
+    private fun remove(node: BinaryNode<T>?, value: T): BinaryNode<T>? {
+        node ?: return null
+
+        when {
+            value == node.value -> { // handle various removal scenarios
+                // 1: removing leaf node
+                if (node.leftChild == null && node.rightChild == null) return null
+                // 2: removing a node with only one child
+                else if (node.leftChild == null) return node.rightChild
+                else if (node.rightChild == null) return node.leftChild
+                // 3. removing a node that has both children: replace that node with leftmost node of right child
+                else
+                    node.rightChild?.min?.value?.let {
+                        node.value = it
+                    }
+
+                node.rightChild = remove(node.rightChild, node.value)
             }
+            value < node.value -> node.leftChild = remove(node.leftChild, value)
+            else -> node.rightChild = remove(node.rightChild, value)
         }
 
-        return false
+        return node
     }
+
+    // end of removing elements logic
 
     override fun toString() = root?.toString() ?: "empty tree"
 }

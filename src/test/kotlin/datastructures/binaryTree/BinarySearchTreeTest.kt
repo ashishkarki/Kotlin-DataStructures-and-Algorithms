@@ -39,4 +39,13 @@ internal class BinarySearchTreeTest {
             println("Couldn't find 5")
         }
     }
+
+    @Test
+    fun `remove should work correctly`() {
+        println("Tree before removal:")
+        println(exampleTree)
+        exampleTree.remove(3)
+        println("Tree after removing root:")
+        println(exampleTree)
+    }
 }

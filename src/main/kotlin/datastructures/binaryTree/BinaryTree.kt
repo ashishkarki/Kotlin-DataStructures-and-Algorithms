@@ -4,7 +4,7 @@ import kotlin.math.max
 
 typealias Visitor<T> = (T?) -> Unit
 
-class BinaryNode<T>(val value: T) {
+class BinaryNode<T>(var value: T) {
 
     var leftChild: BinaryNode<T>? = null
     var rightChild: BinaryNode<T>? = null
@@ -115,6 +115,10 @@ class BinaryNode<T>(val value: T) {
     fun deserializeOptimized(list: MutableList<T?>): BinaryNode<T?>? {
         return deserialize(list.asReversed())
     }
+
+    // This recursive min property in BinaryNode will help you find the minimum node in a subtree
+    val min: BinaryNode<T>?
+        get() = leftChild?.min ?: this
 
     override fun toString() = diagram(this)
 
