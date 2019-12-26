@@ -100,5 +100,24 @@ class BinarySearchTree<T : Comparable<T>> {
 
     // end of removing elements logic
 
+    /**
+     * Create a method that checks if the current tree contains all of the elements of another tree.
+     */
+    fun contains(subtree: BinarySearchTree<T>): Boolean {
+        // 1
+        val set = mutableSetOf<T>()
+        root?.traverseInOrder {
+            it?.let { it1 -> set.add(it1) }
+        }
+
+        // 2
+        var isEqual = true
+        subtree.root?.traverseInOrder {
+            isEqual = isEqual && set.contains(it)
+        }
+
+        return isEqual
+    }
+
     override fun toString() = root?.toString() ?: "empty tree"
 }

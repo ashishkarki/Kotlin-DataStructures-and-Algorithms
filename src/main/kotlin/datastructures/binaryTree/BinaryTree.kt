@@ -138,12 +138,16 @@ class BinaryNode<T : Comparable<T>>(var value: T) {
         else if (max != null && tree.value > max) return false
 
         // 3: If any of the recursive calls evaluate false, the false value will propagate to the top.
+        // When traversing through the left children, the current value is passed in as the max value.
+        // This is because nodes in the left side cannot be greater than the parent. Vice versa, when traversing to the right, the min value is updated to the current value. Nodes in the right side must be greater than the parent.
+        // If any of the recursive calls evaluate false, the false value will propagate to the top.
         return isBST(tree.leftChild, min, tree.value) && isBST(tree.rightChild, tree.value, max)
     }
 
     /**
      * Override equals() to check whether two binary search trees are equal.
      * For two binary trees to be equal, both trees must have the same elements in the same order.
+     * time complexity of this function is O(n). The space complexity of this function is O(n)
      */
     override fun equals(other: Any?): Boolean {
         return if (other != null && other is BinaryNode<*>) {

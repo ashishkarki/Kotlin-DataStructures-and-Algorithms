@@ -1,6 +1,7 @@
 package datastructures.tree
 
 import java.util.*
+import kotlin.collections.ArrayList
 
 class TreeNode<T>(val value: T) {
     val children: MutableList<TreeNode<T>> = mutableListOf()
@@ -27,9 +28,10 @@ class TreeNode<T>(val value: T) {
      * Extra Space required for Level Order Traversal is O(w) where w is maximum width of Binary Tree.
      * In level order traversal, queue one by one stores nodes of different level
      */
+    @Suppress("UNCHECKED_CAST")
     fun forEachLevelOrder(visit: Visitor<T>) {
         visit(this) // visit the root first
-        val queue: Queue<TreeNode<T>> = LinkedList<TreeNode<T>>()
+        val queue: Queue<TreeNode<T>> = ArrayList<TreeNode<T>>() as Queue<TreeNode<T>>
 
         children.forEach { queue.add(it) }
 

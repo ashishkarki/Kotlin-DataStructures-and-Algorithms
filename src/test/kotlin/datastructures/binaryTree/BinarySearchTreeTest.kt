@@ -1,5 +1,6 @@
 package datastructures.binaryTree
 
+import org.amshove.kluent.`should be`
 import org.junit.jupiter.api.Test
 
 internal class BinarySearchTreeTest {
@@ -47,5 +48,12 @@ internal class BinarySearchTreeTest {
         exampleTree.remove(3)
         println("Tree after removing root:")
         println(exampleTree)
+    }
+
+    @Test
+    fun `contains should check for a subtree`() {
+        val result = exampleTree.contains(exampleTree)
+
+        result `should be` true
     }
 }
